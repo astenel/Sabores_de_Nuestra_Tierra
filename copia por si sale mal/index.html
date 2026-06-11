@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helados de la Tierra | Experiencia Artesanal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        'base-crema': '#FDFBF7',
+                        'zapallo': '#C05A2A',
+                        'caqui': '#E58A1F',
+                        'camote': '#9E4723',
+                        'guayaba-rosa': '#E15A75',
+                        'guayaba-verde': '#4A5D23',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Textura de Ruido (Grain) */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 50; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Forma Orgánica Animada (Blob) */
+        .blob-shape {
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: morph 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes morph {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            50% { border-radius: 70% 30% 50% 70% / 30% 50% 70% 50%; }
+            100% { border-radius: 50% 70% 30% 60% / 60% 30% 50% 70%; }
+        }
+
+        /* Clases de utilidad para el JS Observer */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Animación para los ingredientes flotantes */
+        .animate-float {
+            animation: float-icon 6s ease-in-out infinite;
+        }
+
+        @keyframes float-icon {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+    </style>
+    
+    <script type="module" src="./src/main.ts" defer></script>
+</head>
+<body class="bg-base-crema text-slate-800 font-sans antialiased overflow-x-hidden relative">
+    
+    <div class="noise-overlay"></div>
+
+    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-md bg-[#FDFBF7]/90 border-b border-slate-200/50" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <a href="/" class="text-2xl font-serif font-bold text-slate-900 tracking-wide flex items-center gap-2 group">
+                <!--<span class="text-zapallo transition-transform group-hover:rotate-12">🍃</span>-->
+                Sabores De<span class="text-slate-400 font-light italic">Nuestra Tierra</span> 
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-widest uppercase text-slate-600">
+                <a href="/#hero-slider" class="hover:text-zapallo transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-zapallo hover:after:w-full after:transition-all after:duration-300">Inicio</a>
+                <a href="/#sabor-zapallo" class="hover:text-zapallo transition-colors">Sabores</a>
+                <a href="/integrantes.html" class="hover:text-zapallo transition-colors">Integrantes</a>
+                <a href="#foot" class="px-5 py-2 bg-slate-900 text-white rounded-full hover:bg-zapallo transition-colors">Contacto</a>
+            </div>
+
+            <button id="btn-mobile-menu" class="md:hidden text-slate-900 focus:outline-none p-2" aria-label="Abrir menú">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu-panel" class="hidden md:hidden absolute top-20 left-0 w-full bg-[#FDFBF7] border-b border-slate-200 shadow-2xl flex flex-col items-center py-8 gap-6">
+            <a href="/#hero-slider" class="text-sm font-medium tracking-widest uppercase text-slate-600 hover:text-zapallo">Inicio</a>
+            <a href="/#sabor-zapallo" class="text-sm font-medium tracking-widest uppercase text-slate-600 hover:text-zapallo">Sabores</a>
+            <a href="/integrantes.html" class="text-sm font-medium tracking-widest uppercase text-slate-600 hover:text-zapallo">Integrantes</a>
+            <a href="#foot" class="px-8 py-3 bg-slate-900 text-white text-sm font-medium tracking-widest uppercase rounded-full hover:bg-zapallo">Contacto</a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnMenu = document.getElementById('btn-mobile-menu');
+            const mobilePanel = document.getElementById('mobile-menu-panel');
+            const mobileLinks = mobilePanel ? mobilePanel.querySelectorAll('a') : [];
+
+            if(btnMenu && mobilePanel) {
+                // Alternar menú al hacer clic en la hamburguesa
+                btnMenu.addEventListener('click', () => {
+                    mobilePanel.classList.toggle('hidden');
+                });
+                
+                // Cerrar menú automáticamente al hacer clic en cualquier enlace
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobilePanel.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
+    <header id="hero-slider" class="relative h-screen w-full overflow-hidden bg-base-crema flex flex-col items-center justify-center pt-20">
+        <div id="bg-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans font-black text-[18vw] leading-none text-zapallo/10 select-none z-0 transition-all duration-700 ease-in-out whitespace-nowrap">
+            ZAPALLO
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center w-full max-w-6xl px-4 mt-12">
+            
+            <img id="float-1" src="./src/assets/canela.png" alt="Ingrediente flotante" class="absolute top-0 left-[20%] w-16 h-16 md:w-20 md:h-20 object-contain animate-float drop-shadow-lg" style="animation-delay: 0s;">
+            <img id="float-2" src="./src/assets/hojas_otoño.png" alt="Ingrediente flotante" class="absolute bottom-[20%] left-[10%] w-12 h-12 md:w-16 md:h-16 object-contain animate-float drop-shadow-xl " style="animation-delay: 1.5s;">
+            <img id="float-3" src="./src/assets/semilla_zapallo.png" alt="Ingrediente flotante" class="absolute top-[10%] right-[20%] w-20 h-20 md:w-24 md:h-24 object-contain animate-float drop-shadow-lg" style="animation-delay: 0.8s;">
+            <img id="float-4" src="./src/assets/anis.png" alt="Ingrediente flotante" class="absolute bottom-[10%] right-[15%] w-14 h-14 md:w-20 md:h-20 object-contain animate-float drop-shadow-xl" style="animation-delay: 2s;">
+
+<img 
+    id="hero-image" 
+    src="./src/assets/helado_sapa1.png" 
+    alt="Helado de Zapallo" 
+    class="relative w-72 h-72 md:w-[450px] md:h-[450px] object-contain drop-shadow-2xl transition-all duration-700 ease-in-out transform hover:scale-105 z-20"
+>                <!--<span id="hero-emoji" class="text-8xl md:text-[10rem] drop-shadow-2xl transition-transform duration-700">🎃</span>-->
+            </img>
+
+            <div class="text-center mt-[-30px] md:mt-[-50px] z-30 transition-all duration-700" id="text-container">
+                <h2 id="front-text" class="text-5xl md:text-8xl font-serif font-bold text-slate-900 tracking-tight uppercase drop-shadow-md">
+                    ZAPALLO
+                </h2>
+                <p id="sub-text" class="mt-4 tracking-[0.4em] uppercase text-sm md:text-base font-bold text-zapallo bg-base-crema/80 backdrop-blur-sm px-4 py-1 rounded-full inline-block">
+                    ESPECIAS & CANELA
+                </p>
+            </div>
+            
+            <!--<button class="mt-8 px-10 py-4 bg-slate-900 text-white font-medium rounded-full hover:bg-zapallo hover:scale-105 transition-all duration-300 shadow-xl z-30 flex items-center gap-2">
+                Descubrir Sabor <span class="text-xl">→</span>
+            </button>-->
+        </div>
+
+        <div class="absolute bottom-10 right-10 flex gap-4 z-40">
+            <button id="prev-btn" class="w-14 h-14 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 backdrop-blur-md bg-white/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button id="next-btn" class="w-14 h-14 rounded-full border-2 border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all duration-300 backdrop-blur-md bg-white/30">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+        
+        <div class="absolute bottom-14 left-10 flex gap-2 z-40" id="slider-dots">
+            </div>
+    </header>
+
+    <main>
+        <section id="sabor-zapallo" class="min-h-screen relative flex items-center py-20 overflow-hidden">
+            <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center w-full">
+                <div class="relative z-10 group">
+                <div class="w-72 h-72 md:w-96 md:h-96 bg-[#D97941]/20 blob-shape absolute -z-10 -left-10 -top-10 backdrop-blur-3xl transition-transform duration-700 group-hover:scale-110"></div>
+            <img src="./src/assets/helado_zapallo.png" alt="Helado Cremoso de Zapallo" class="w-full h-96 object-cover rounded-2xl shadow-xl border-4 border-white/50 transition-transform duration-700 hover:-translate-y-2">
+</div>
+                <div class="reveal">
+                    <h2 class="text-4xl md:text-5xl font-serif text-zapallo mb-4">Helado de Zapallo</h2>
+                    <p class="text-slate-600 mb-8 font-light leading-relaxed">Una experiencia aterciopelada y cremosa que resalta el sabor puro y natural del zapallo, ideal para disfrutar en cualquier momento.</p>
+                    
+                    <h3 class="text-sm uppercase tracking-widest font-bold text-slate-400 mb-4">La Receta</h3>
+                    <ul class="space-y-3 mb-6 font-light">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-zapallo"></span> 840g Pulpa de zapallo cocida</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-zapallo"></span> 700g Crema de leche fría</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-zapallo"></span> 200g Leche entera</li>
+                    </ul>
+                    <p class="text-sm bg-white/50 p-4 rounded-lg border border-zapallo/20 mb-6">Licúa el zapallo con las leches hasta obtener un puré liso. Incorpora suavemente a la crema semi-montada y congela por 6 horas.</p>
+
+                    <a href="/receta.html?sabor=zapallo" class="inline-flex items-center gap-2 px-6 py-3 bg-zapallo text-white font-medium rounded-full hover:bg-[#a64d23] transition-colors shadow-lg hover:shadow-xl">
+                        Ver detalles completos
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!--<img src="./src/assets/hojas_otoño.png" alt="Decoración de otoño" class="parallax absolute top-20 right-1/3 w-32 h-32 object-contain opacity-100 " data-speed="-0.1">-->
+            <img src="/src/assets/hojas_otono.png" alt="Decoración" class="parallax absolute top-1/3 right-10 w-32 h-32 object-contain opacity-100  z-10 animate-float" data-speed="0.1">
+
+        </section>
+
+        <section id="sabor-caqui" class="min-h-screen relative flex items-center py-20 overflow-hidden bg-[#FEF9F0]">
+            <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center w-full">
+                <div class="reveal order-2 md:order-1">
+                    <h2 class="text-4xl md:text-5xl font-serif text-caqui mb-4">Helado de Caqui</h2>
+                    <p class="text-slate-600 mb-8 font-light leading-relaxed">La dulzura natural del caqui en un helado cremoso y refrescante, preparado con pulpa congelada para garantizar una textura perfecta y sedosa.</p>
+                    
+                    <h3 class="text-sm uppercase tracking-widest font-bold text-slate-400 mb-4">La Receta</h3>
+                    <ul class="space-y-3 mb-6 font-light">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-caqui"></span> 1400g Pulpa de caqui congelada</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-caqui"></span> 800g Crema de leche fría</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-caqui"></span> 600g Leche entera</li>
+                    </ul>
+                    <p class="text-sm bg-white/50 p-4 rounded-lg border border-caqui/20">Procesa la pulpa congelada con las leches hasta obtener un puré liso. Envuelve suavemente con la crema semi-montada y congela por 6 horas.</p>
+                    
+                    <a href="/receta.html?sabor=caqui" class="inline-flex items-center gap-2 px-6 py-3 bg-caqui text-white font-medium rounded-full hover:bg-[#cc7a1b] transition-colors shadow-lg hover:shadow-xl w-max mt-4">
+                        Ver detalles completos →
+                    </a>
+                </div>
+                <div class="relative z-10 order-1 md:order-2 group">
+                    <div class="w-72 h-72 md:w-96 md:h-96 bg-[#F59E0B]/20 blob-shape absolute -z-10 -right-10 -bottom-10 backdrop-blur-3xl transition-transform duration-700 group-hover:scale-110"></div>
+                    <img src="./src/assets/receta-helados-caquis.png" alt="Helado Sorbete de Caqui" class="w-full h-96 object-cover rounded-2xl shadow-xl border-4 border-white/50 transition-transform duration-700 hover:-translate-y-2">
+                </div>
+            </div>
+             <img src="./src/assets/flor_vainilla.png" alt="Decoración" class="parallax absolute bottom-20 left-10 w-24 h-24 object-contain opacity-100  z-10 animate-float" data-speed="-0.15">
+
+        </section>
+        <section id="sabor-camote" class="min-h-screen relative flex items-center py-20 overflow-hidden">
+            <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center w-full">
+                
+                <div class="relative z-10 group">
+                    <div class="w-72 h-72 md:w-96 md:h-96 bg-[#9E4723]/20 blob-shape absolute -z-10 -left-10 -top-10 backdrop-blur-3xl transition-transform duration-700 group-hover:scale-110"></div>
+                    
+                    <img 
+                        src="./src/assets/camotes.jpg" 
+                        alt="Helado de Camote Caramelizado" 
+                        class="w-full h-96 object-cover rounded-2xl shadow-xl border-4 border-white/50 transition-transform duration-700 hover:-translate-y-2"
+                    >
+                </div>
+
+                <div class="reveal">
+                    <h2 class="text-4xl md:text-5xl font-serif text-camote mb-4">Helado de Camote</h2>
+                    <p class="text-slate-600 mb-8 font-light leading-relaxed">Un sabor terroso, profundo y naturalmente dulce, logrado a partir de camotes horneados que se funden en una base láctea increíblemente sedosa.</p>
+                    
+                    <h3 class="text-sm uppercase tracking-widest font-bold text-slate-400 mb-4">La Receta</h3>
+                    <ul class="space-y-3 mb-6 font-light">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-camote"></span> 1000g Pulpa de camote horneada</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-camote"></span> 700g Crema de leche fría</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-camote"></span> 500g Leche entera</li>
+                    </ul>
+                    <p class="text-sm bg-white/50 p-4 rounded-lg border border-camote/20">Tritura el camote horneado con las leches hasta lograr un puré fino. Emulsiona suavemente con la crema semi-montada y congela por 6 horas.</p>
+                    
+                    <a href="/receta.html?sabor=camote" class="inline-flex items-center gap-2 px-6 py-3 bg-camote text-white font-medium rounded-full hover:bg-[#853c1d] transition-colors shadow-lg hover:shadow-xl w-max mt-4">
+                        Ver detalles completos →
+                    </a>
+                </div>
+            </div>
+            
+            <img src="/src/assets/hojas.png" alt="Decoración" class="parallax absolute top-1/3 right-10 w-32 h-32 object-contain opacity-100  z-10 animate-float" data-speed="0.1">
+        </section>
+        <section id="sabor-guayaba" class="min-h-screen relative flex items-center py-20 overflow-hidden bg-[#FEF9F0]">
+            <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center w-full">
+                
+                <div class="reveal order-2 md:order-1">
+                    <h2 class="text-4xl md:text-5xl font-serif text-guayaba-rosa mb-4">Helado de Guayaba</h2>
+                    <p class="text-slate-600 mb-8 font-light leading-relaxed">Exótico, aromático y ahora con una textura increíblemente sedosa gracias a su cremosa base láctea y pulpa congelada. Una verdadera obra de arte tropical.</p>
+                    
+                    <h3 class="text-sm uppercase tracking-widest font-bold text-guayaba-verde mb-4">La Receta</h3>
+                    <ul class="space-y-3 mb-6 font-light">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-guayaba-rosa"></span> 1000g Pulpa de guayaba congelada</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-guayaba-rosa"></span> 700g Crema de leche fría</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-guayaba-rosa"></span> 300g Leche condensada</li>
+                    </ul>
+                    <p class="text-sm bg-white/50 p-4 rounded-lg border border-guayaba-rosa/20">Procesa la pulpa congelada con las leches hasta obtener un puré liso. Incorpora la crema semi-montada con movimientos suaves y congela por 6 horas.</p>
+                    
+                    <a href="/receta.html?sabor=guayaba" class="inline-flex items-center gap-2 px-6 py-3 bg-guayaba-rosa text-white font-medium rounded-full hover:bg-[#c94f68] transition-colors shadow-lg hover:shadow-xl w-max mt-4">
+                        Ver detalles completos →
+                    </a>
+                </div>
+
+                <div class="relative z-10 order-1 md:order-2 group">
+                    <div class="w-72 h-72 md:w-96 md:h-96 bg-guayaba-rosa/10 blob-shape absolute -z-10 -right-10 -bottom-10 backdrop-blur-3xl transition-transform duration-700 group-hover:scale-110"></div>
+                    <img src="./src/assets/heladoguayaba.jpg" alt="Delicia de Guayaba" class="w-full h-96 object-cover rounded-2xl shadow-xl border-4 border-white/50 transition-transform duration-700 hover:-translate-y-2">
+                </div>
+            </div>
+            
+            <img src="./src/assets/flor_ibisco.png" alt="Decoración" class="parallax absolute bottom-20 left-10 w-24 h-24 object-contain opacity-60  z-10 animate-float" data-speed="-0.15">
+        </section>
+
+    </main>
+</body>
+<!-- FOOTER PRINCIPAL -->
+    <footer id="foot" class="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+            
+            <!-- Columna 1: Branding y Contexto -->
+            <div>
+                <a href="/" class="text-2xl font-serif font-bold text-white tracking-wide flex items-center gap-2 mb-6 group w-max">
+                    <!--<span class="text-zapallo transition-transform group-hover:rotate-12">🍃</span> -->
+                    Sabores De <span class="text-slate-500 font-light italic">Nuestra Tierra</span> 
+                </a>
+                <p class="text-sm text-slate-400 font-light leading-relaxed mb-6 max-w-xs">
+                    Proyecto académico enfocado en la elaboración artesanal de helados, rescatando ingredientes tradicionales mediante procesos de industrialización de alimentos.
+                </p>
+            </div>
+
+            <!-- Columna 2: Navegación Rápida -->
+            <nav aria-label="Navegación secundaria">
+                <h3 class="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-6">Explorar</h3>
+                <ul class="space-y-4 text-sm font-light">
+                    <li><a href="/#hero-slider" class="hover:text-zapallo transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded">Inicio</a></li>
+                    <li><a href="/#sabor-zapallo" class="hover:text-zapallo transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded">Nuestros Sabores</a></li>
+                    <li><a href="/integrantes.html" class="hover:text-zapallo transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded">El Equipo</a></li>
+                </ul>
+            </nav>
+
+            <!-- Columna 3: Contacto -->
+            <div>
+                <h3 class="text-xs uppercase tracking-widest text-slate-500 font-semibold mb-6">Contacto</h3>
+                <ul class="space-y-4 text-sm font-light text-slate-400">
+                    
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span>Vallegrande</span>
+                    </li>
+                    
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <a href="astetenelson7@gmail.com" class="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded">astetenelson7@gmail.com</a>
+                    </li>
+
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-slate-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                        <a href="https://wa.me/59163562934" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:text-green-400 transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded">+591 63562934</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Barra inferior: Copyright -->
+        <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <p class="text-xs text-slate-500 font-light">
+                &copy; <span id="current-year">2026</span> Todos los Derechos Reservados
+            </p>
+            
+            <p class="text-xs text-slate-500 font-light flex items-center gap-1.5">
+                Diseñado y desarrollado por 
+                <a href="https://wa.me/59163562934" class="font-medium text-slate-300 hover:text-zapallo transition-colors focus:outline-none focus:ring-2 focus:ring-zapallo rounded px-1">
+                    Nelson Astete Arnez
+                </a>
+            </p>
+
+        </div>
+    </footer>
+</html>
