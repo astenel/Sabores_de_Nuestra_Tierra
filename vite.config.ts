@@ -1,6 +1,17 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  // REEMPLAZA 'mi-repositorio' con el nombre EXACTO que tendrá tu repositorio en GitHub
-  base: '/Sabores_de_Nuestra_Tierra/', 
+  // Mantenemos tu ruta base para GitHub Pages
+  base: '/Sabores_de_Nuestra_Tierra/',
+  
+  // Le indicamos a Vite que construya las múltiples páginas
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        integrantes: 'integrantes.html',
+        receta: 'receta.html'
+      }
+    }
+  }
 });
