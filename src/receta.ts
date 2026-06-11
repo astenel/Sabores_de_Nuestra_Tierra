@@ -15,8 +15,8 @@ const database: Record<string, RecetaData> = {
     zapallo: {
         titulo: 'Helado Artesanal de Zapallo',
         desc: 'Una experiencia aterciopelada y cremosa que resalta el sabor natural del zapallo en cada cucharada.',
-        imagen: '/src/assets/helado_zapallo.png', 
-        imagenFlotante: '/src/assets/hallow.png', 
+        imagen: 'helado_zapallo.png', 
+        imagenFlotante: 'hallow.png', 
         color: '#C05A2A',
         ingredientes: [
             '840 g de Zapallo (peso de la pulpa cocida en agua y escurrida)',
@@ -36,8 +36,8 @@ const database: Record<string, RecetaData> = {
     caqui: {
         titulo: 'Helado de Caqui',
         desc: 'La dulzura natural del caqui transformada en un helado rico y cremoso, utilizando pulpa congelada para una textura inigualable.',
-        imagen: '/src/assets/receta-helados-caquis.png', 
-        imagenFlotante: '/src/assets/caqui1.png', 
+        imagen: 'receta-helados-caquis.png', 
+        imagenFlotante: 'caqui1.png', 
         color: '#E58A1F',
         ingredientes: [
             '1400 g de Caqui (peso de la pulpa extraída y congelada)',
@@ -57,8 +57,8 @@ const database: Record<string, RecetaData> = {
     camote: {
         titulo: 'Helado de Camote',
         desc: 'Un sabor terroso, profundo y naturalmente dulce, logrado a partir de pulpa de camote horneada y una base láctea sumamente sedosa.',
-        imagen: '/src/assets/camotes.jpg',  
-        imagenFlotante: '/src/assets/camote.png', 
+        imagen: 'camotes.jpg',  
+        imagenFlotante: 'camote.png', 
         color: '#9E4723',
         ingredientes: [
             '1000 g de Camote (peso de la pulpa horneada)',
@@ -78,8 +78,8 @@ const database: Record<string, RecetaData> = {
     guayaba: {
         titulo: 'Helado de Guayaba',
         desc: 'Un escape tropical con una textura suave y sedosa. Aromático, exótico y con un color vibrante inconfundible gracias a su base láctea y pulpa pura.',
-        imagen: '/src/assets/heladoguayaba.jpg', 
-        imagenFlotante: '/src/assets/guayaba1.png', 
+        imagen: 'heladoguayaba.jpg', 
+        imagenFlotante: 'guayaba1.png', 
         color: '#E15A75',
         ingredientes: [
             '1000 g de Guayaba (peso de la pulpa limpia y congelada)',

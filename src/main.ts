@@ -17,12 +17,12 @@ const heroFlavors: FlavorData[] = [
         frontText: 'ZAPALLO',
         subText: 'ESPECIAS & CANELA',
         colorHex: '#C05A2A', 
-        imageSrc: './src/assets/helado_sapa1.png', 
+        imageSrc: 'helado_sapa1.png', 
         floaters: [
-            './src/assets/canela.png', 
-            './src/assets/hojas_otoño.png', 
-            './src/assets/semilla_zapallo.png', 
-            './src/assets/anis.png'
+            'canela.png', 
+            'hojas_otoño.png', 
+            'semilla_zapallo.png', 
+            'anis.png'
         ]
     },
     {
@@ -31,12 +31,12 @@ const heroFlavors: FlavorData[] = [
         frontText: 'CAQUI',
         subText: 'DULZURA ÁMBAR',
         colorHex: '#E58A1F', 
-        imageSrc: './src/assets/receta-helados-caquis.png', 
+        imageSrc: 'receta-helados-caquis.png', 
         floaters: [
-            './src/assets/menta.png', 
-            './src/assets/miel.png', 
-            './src/assets/flor_vainilla.png',
-            './src/assets/limon.png' 
+            'menta.png', 
+            'miel.png', 
+            'flor_vainilla.png',
+            'limon.png' 
         ]
     },
     {
@@ -45,12 +45,12 @@ const heroFlavors: FlavorData[] = [
         frontText: 'CAMOTE',
         subText: 'CARAMELO TERROSO',
         colorHex: '#9E4723', 
-        imageSrc: './src/assets/helado_camote.png', 
+        imageSrc: 'helado_camote.png', 
         floaters: [
-            './src/assets/nuez.png', 
-            './src/assets/hojas_otoño.png', 
-            './src/assets/clavo_de_olor.png', 
-            './src/assets/flor_vainilla.png'
+            'nuez.png', 
+            'hojas_otoño.png', 
+            'clavo_de_olor.png', 
+            'flor_vainilla.png'
         ]
     },
     {
@@ -59,12 +59,12 @@ const heroFlavors: FlavorData[] = [
         frontText: 'GUAYABA',
         subText: 'CONTRASTE TROPICAL',
         colorHex: '#E15A75', 
-        imageSrc: './src/assets/helado_guayaba.png', 
+        imageSrc: 'helado_guayaba.png', 
         floaters: [
-            './src/assets/palma.png', 
-            './src/assets/flor_ibisco.png', 
-            './src/assets/caramelo.png', 
-            './src/assets/limon.png'
+            'palma.png', 
+            'flor_ibisco.png', 
+            'caramelo.png', 
+            'limon.png'
         ]
     }
 ];
