@@ -109,6 +109,8 @@ function initHeroSlider(): void {
     
     const dotsContainer = document.getElementById('slider-dots');
     if (dotsContainer) {
+        // Limpiar contenedor antes de agregar para evitar duplicados si se llama re-inicializaciones
+        dotsContainer.textContent = '';
         heroFlavors.forEach((_, index) => {
             const dot = document.createElement('div');
             dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? 'bg-slate-800 w-8' : 'bg-slate-300'}`;
@@ -241,11 +243,6 @@ function initVisualEffects(): void {
     }, { passive: true });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initVisualEffects(); 
-    initHeroSlider();    
-});
-
 function precargarImagenesSlider(): void {
     heroFlavors.forEach(flavor => {
         // Precarga la imagen principal del helado
@@ -260,9 +257,9 @@ function precargarImagenesSlider(): void {
     });
 }
 
-// --- INICIALIZACIÓN ---
+// --- ÚNICA INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
-    precargarImagenesSlider(); // Inicia la descarga secreta
-    initVisualEffects(); 
-    initHeroSlider();    
+    precargarImagenesSlider(); // Inicia la descarga en segundo plano
+    initVisualEffects();       // Inicializa los efectos de scroll e Intersection Observer
+    initHeroSlider();          // Inicializa el slider con sus eventos correspondientes
 });
