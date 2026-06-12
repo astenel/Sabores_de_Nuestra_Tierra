@@ -13,7 +13,7 @@ interface RecetaData {
 // 2. Base de datos completa de las recetas
 const database: Record<string, RecetaData> = {
     zapallo: {
-        titulo: 'Helado Artesanal de Zapallo',
+        titulo: 'Helado de Zapallo',
         desc: 'Una experiencia aterciopelada y cremosa que resalta el sabor natural del zapallo en cada cucharada.',
         imagen: 'helado_zapallo.png', 
         imagenFlotante: 'hallow.png', 
