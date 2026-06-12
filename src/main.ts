@@ -245,3 +245,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initVisualEffects(); 
     initHeroSlider();    
 });
+
+function precargarImagenesSlider(): void {
+    heroFlavors.forEach(flavor => {
+        // Precarga la imagen principal del helado
+        const imgPrincipal = new Image();
+        imgPrincipal.src = flavor.imageSrc;
+
+        // Opcional pero recomendado: Precarga también los ingredientes flotantes
+        flavor.floaters.forEach(floater => {
+            const imgFlotante = new Image();
+            imgFlotante.src = floater;
+        });
+    });
+}
+
+// --- INICIALIZACIÓN ---
+document.addEventListener('DOMContentLoaded', () => {
+    precargarImagenesSlider(); // Inicia la descarga secreta
+    initVisualEffects(); 
+    initHeroSlider();    
+});
